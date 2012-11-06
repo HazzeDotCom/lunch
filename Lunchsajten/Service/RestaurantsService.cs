@@ -76,9 +76,9 @@ namespace Lunchsajten.Service
                 Url = r.Url,
                 Phone = r.PhoneNumbers.Any() ? r.PhoneNumbers.FirstOrDefault().Number : "", //   r.PhoneNumbers.FirstOrDefault().Number,
                 //  Contact = new UserViewModel(), // new UserViewModel { Email = r.Contacts.FirstOrDefault().Email, Id = r.Contacts.FirstOrDefault().Id, FirstName = r.Contacts.FirstOrDefault().FirstName, LastName = r.Contacts.FirstOrDefault().LastName, Phone = r.Contacts.FirstOrDefault().PhoneNumbers.FirstOrDefault().Number },
-                Dishes = r.Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
-                //Dishes = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days
-                //    .FirstOrDefault(x => (int)x.DayOfWeek == model.Day).Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
+              //  Dishes = r.Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
+                Dishes = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days
+                    .FirstOrDefault(x => (int)x.DayOfWeek == model.Day).Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
             };
             return rest;
         }

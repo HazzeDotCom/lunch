@@ -9,6 +9,6 @@ namespace Business
         public virtual DishType DishType { get; set; }
         public virtual Restaurant Restaurant { get; set; }
         public KitchenType KitchenType { get; set; }
-        public virtual MenuDay MenuDay { get; set; }
+        //public virtual MenuDay MenuDay { get; set; }
     }
 }

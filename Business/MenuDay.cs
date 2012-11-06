@@ -10,5 +10,6 @@ namespace Business
         public virtual ICollection<Dish> Dishes { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         public string Message { get; set; }
+        public virtual Menu Menu { get; set; }
     }
 }

@@ -565,6 +565,10 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
 
             #endregion
 
+
+            var weeknr = CalendarManager.GetCurrentWeek();
+            var now = DateTime.Now.Year;
+
             restaurants.First().Company = c;
             foreach (var restaurant in restaurants)
             {
@@ -574,35 +578,43 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
                 db.Restaurants.Add(restaurant);
                 restaurant.Areas.Add(l1);
                 restaurant.Dishes = CreateDishes(restaurant);
+
+
+                var menu = new Menu
+                {
+                    Year = now,
+                    Week = weeknr,
+                    Info = string.Format("Information för menun som gäller för vecka {0} ", weeknr),
+                    Restaurant = restaurant
+                };
+
+                var dayOneDishes = restaurant.Dishes.Take(3).ToList();
+                var days = new List<MenuDay>()
+                                {
+                                    new MenuDay() {DayOfWeek = DayOfWeek.Monday, Dishes = dayOneDishes, Menu = menu },
+                                    new MenuDay() {DayOfWeek = DayOfWeek.Tuesday, Dishes = dayOneDishes, Menu = menu },
+                                    new MenuDay() {DayOfWeek = DayOfWeek.Wednesday, Dishes = dayOneDishes, Menu = menu  },
+                                    new MenuDay()
+                                        {
+                                            DayOfWeek = DayOfWeek.Thursday,
+                                            Dishes = dayOneDishes,
+                                            Message = "Ett erbjudande för idag!!", Menu = menu 
+                                        },
+                                    new MenuDay() {DayOfWeek = DayOfWeek.Friday, Dishes = dayOneDishes, Menu = menu }
+                                };
+                db.Menus.Add(menu);
+                menu.Days = days;
             }
             db.SaveChanges();
 
             foreach (var restaurant in restaurants)
             {
-                var weeknr = CalendarManager.GetCurrentWeek();
-                var now = DateTime.Now.Year;
-                var dayOneDishes = restaurant.Dishes.Take(3).ToList();
-                var menu = new Menu
-                               {
-                                   Year = now,
-                                   Week = weeknr,
-                                   Info = string.Format("Information för menun som gäller för vecka {0} ", weeknr),
-                                   Days = new List<MenuDay>()
-                                              {
-                                                  new MenuDay() { DayOfWeek = DayOfWeek.Monday, Dishes = dayOneDishes },
-                                                  new MenuDay() { DayOfWeek = DayOfWeek.Tuesday, Dishes = dayOneDishes },
-                                                  new MenuDay() { DayOfWeek = DayOfWeek.Wednesday, Dishes = dayOneDishes },
-                                                  new MenuDay() { DayOfWeek = DayOfWeek.Thursday, Dishes = dayOneDishes, Message = "Ett erbjudande för idag!!"},
-                                                  new MenuDay() { DayOfWeek = DayOfWeek.Friday, Dishes = dayOneDishes }
-                                              }
-                               };
 
-                restaurant.Menus.Add(menu);
-                db.Menus.Add(menu);
-                foreach (var day in menu.Days)
-                {
-                    db.MenuDays.Add(day);
-                }
+                //foreach (var day in days)
+                //{
+                //    db.MenuDays.Add(day);
+                //}
+                //db.SaveChanges();
             }
             db.SaveChanges();
         }
