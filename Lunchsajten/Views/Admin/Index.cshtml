@@ -1,0 +1,72 @@
+﻿@model Models.AdminModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Administration";
+}
+   
+   <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                
+                @*<a class="brand" href="/">Motalalunch</a>*@
+                @*@Html.ActionLink("Home", "Index", "Home")*@
+                <div class="cityName">Administration</div>
+                    
+                @*<div style="float:left; padding-right: 20px;">@Html.DropDownList("lunchAreaId", Model.SelectlistItemsLunchAreas)</div>*@
+                <ul class="nav pages">
+                    <li id="tabLunchAreas" class="@(ViewBag.ActiveTab == 1 ? "active" : "")"><a href="#">Lunchområden</a></li>
+                    <li id="tabCompanies" class="@(ViewBag.ActiveTab == 2 ? "active" : "")"><a href="#">Företag</a></li>
+                    <li id="tabRestaurants" class="@(ViewBag.ActiveTab == 3 ? "active" : "")"><a href="#">Restauranger</a></li>
+                    @*<li><a href="@Url.Action("Restaurants", "Admin")">Restauranger</a></li>*@
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<div class="container mainContent">
+<div id="dynamicData">data...</div>
+
+</div>
+
+<script type="text/javascript">
+    var loader = '<div style="margin-left:auto; margin-right:auto; width:100px;"><img src="@Url.Content("~/gifs/ajax-loader-large-ring.gif")" alt="loading gif" /></div>';
+
+    $(document).ready(function () {
+        Init();
+
+        $('.pages li').click(function (e) {
+            $('.pages li').removeClass('active');
+            var $this = $(this);
+            if (!$this.hasClass('active')) {
+                $this.addClass('active');
+            }
+            e.preventDefault();
+
+            var tab = $this.attr('id');
+            var model = { Tab: tab };
+            LoadData(model);
+        });
+    });
+
+    function Init() {
+        var model = { Tab: 'tablunchareas' }; // Tab: 'tablunchareas', LunchAreaId: $('#lunchAreaId :selected').val() };
+        LoadData(model);
+    }
+
+    function LoadData(model) {
+        //$('html, body').animate({ scrollTop: 0 }, 'slow');
+        $('#dynamicData').html(loader);
+        var xhr = $.post('@Url.Action("GetData", "Admin")', model)
+                    .success(function (data) {
+                        $('#dynamicData').html(data.Partial);
+                    })
+                    .error(function (data) {
+                        $('#dynamicData').html(data.ErrorMsg);
+                    })
+                    .complete(function (data) {
+                        //$('#Dishes').append(data.SearchCount);
+                    });
+    }
+
+</script>
+

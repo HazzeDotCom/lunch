@@ -1,0 +1,249 @@
+﻿<style> 
+    
+</style>
+
+<script type="text/javascript">
+    var loader = '<div style="margin-left:auto; margin-right:auto; width:100px;"><img src="@Url.Content("~/gifs/ajax-loader-large-ring.gif")" alt="loading gif" /></div>';
+    $(document).ready(function () {
+        Init();
+
+        $('.idag').tooltip('show').tooltip('hide');
+        //$('.ad img').popover('toogle');
+        
+
+        $("#txtSearch").click(function () {
+            $(this).select();
+            Init();
+            lastSearch = "";
+        });
+
+        $('.lunchareas li').click(function (e) {
+            $('.lunchareas li').removeClass('active');
+            var $this = $(this);
+            if (!$this.hasClass('active')) {
+                $this.addClass('active');
+            }
+            e.preventDefault();
+            LoadRestuarantsAndDishes();
+        });
+
+        $('.days li').click(function (e) {
+            $('.days li').removeClass('active');
+            var $this = $(this);
+            if (!$this.hasClass('active')) {
+                $this.addClass('active');
+            }
+            e.preventDefault();
+            LoadRestuarantsAndDishes();
+        });
+
+        var lastSearch = "";
+        $("#txtSearch").keyup(function () {
+            var minlength = 1;
+            value = $(this).val();
+
+            if (value.length >= minlength) {
+                $('#restaurantsAndDishes').html(loader);
+
+                if (value != lastSearch) {
+                    lastSearch = value;
+                    LoadRestuarantsAndDishes();
+                }
+            }
+        });
+
+        function Init() {
+            LoadRestuarantsAndDishes();
+        }
+
+        function LoadRestuarantsAndDishes() {
+            $('#restaurantsAndDishes').html(loader);
+            $('#adds').html(loader);
+
+            var areaid = $(".lunchareas li.active").attr('areaid');
+            var areaName = $(".lunchareas li.active").attr('name');
+
+            var day = $("days li.active").attr('day');
+            var searchModel = { Day: day, SearchString: $('#txtSearch').val(), AreaId: areaid };
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+            var xhr = $.post('@Url.Action("GetRestaurantsAndDishes", "Home")', searchModel)
+                    .success(function (data) {
+                        //$('#restaurantsAndDishes').hide(1000);
+                        $('#pageTitle').html(areaName);
+                        var areaDescription = '<div style="margin-left: 80px; width: 100%; padding-top:30px; padding-bottom: 20px;"><h2 style="text-align: center">' + data.AreaDescription + '</h2></div><br />';
+                        var html = areaDescription + data.Partial;
+                        $('#restaurantsAndDishes').html(html);
+                        $('#adds').html(data.PartialAdds);
+                        
+                        var options = { trigger: 'hover' };
+                        $('.ad img').popover(options);
+
+                        //$('#restaurantsAndDishes').show(500);
+                    })
+                    .error(function (data) {
+                        $('#restaurantsAndDishes').html(data.ErrorMsg);
+                    })
+                    .complete(function (data) {
+                        $('#restaurantsAndDishes').append(data.SearchCount);
+                    });
+        }
+
+
+    });
+    </script>
+
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+        
+        <div class="calendar rotate20 hidden-phone">
+            <div class="pull-left">@ViewBag.Year</div><div class="pull-right" style="color:Black; font-weight:bold;">v @ViewBag.WeekNr</div>
+            <div class="theName">@ViewBag.TodaysName</div>
+            <h1>@ViewBag.TodaysDate</h1>
+            <div class="theMonth">@ViewBag.CurrentMonthsName</div>
+            <div style="padding-top:6px">@ViewBag.Names</div>
+        </div>
+
+               <div class="hidden-phone" style="width:140px; height: 100px; float:left"></div>
+                
+                <strong class="pull-left visible-phone" style="color:Black">@ViewBag.TodayAsString, vecka @ViewBag.WeekNr</strong>
+                @*<strong class="pull-left visible-phone" style="color:Black">Vecka @ViewBag.WeekNr</strong>*@
+
+                <div onclick="window.location.reload(true);" style="cursor:pointer" title="Ladda om sidan!" class="cityName" id="pageTitle">@ViewBag.Title</div>
+                   
+                <ul class="nav days">
+                     @{ var attrs = "class=idag data-placement=bottom rel=tooltip title=Idag"; }
+                    <li day="1" class="@(ViewBag.Day == DayOfWeek.Monday ? "active" : "")"><a href="#" @(ViewBag.Day == DayOfWeek.Monday ? attrs : "")>Måndag</a></li>
+                    <li day="2" class="@(ViewBag.Day == DayOfWeek.Tuesday ? "active" : "")"><a href="#" @(ViewBag.Day == DayOfWeek.Tuesday ? attrs : "")>Tisdag</a></li>
+                    <li day="3" class="@(ViewBag.Day == DayOfWeek.Wednesday ? "active" : "")"><a href="#" @(ViewBag.Day == DayOfWeek.Wednesday ? attrs : "")>Onsdag</a></li>
+                    <li day="4" class="@(ViewBag.Day == DayOfWeek.Thursday ? "active" : "")"><a href="#" @(ViewBag.Day == DayOfWeek.Thursday ? attrs : "") >Torsdag</a></li>
+                    <li day="5" class="@(ViewBag.Day == DayOfWeek.Friday ? "active" : "")"><a href="#" @(ViewBag.Day == DayOfWeek.Friday ? attrs : "")>Fredag</a></li>
+                    </ul>
+                
+                <div class="nav-collapse">
+                    <form class="navbar-search">
+                        <input id="txtSearch" type="text" class="search-query" placeholder="Sök" />
+                    </form>
+                    
+                    @*<ul class="nav pull-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Om <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li>@Html.ActionLink("Om", "About", "Home")</li>
+                          <li class="divider"></li>
+                            <li><div id="logindisplay">@Html.Partial("_LogOnPartial")</div></li>
+                            <li>@Html.Partial("_LogOnPartial")</li>
+                        </ul>
+                      </li>
+                    </ul>
+                    *@
+                <ul class="nav pull-right">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ändra stad/lunchområde <b class="caret"></b></a>
+    <ul class="dropdown-menu lunchareas">
+        @{ var i = 0; }
+        @foreach (var area in ViewBag.LunchAreas)
+        {
+            if (i == 0)
+            { 
+                <li areaid="@area.Id" name="@area.Url" class="active"><a href="#">@area.Name</a></li>
+            }
+            else { 
+                <li areaid="@area.Id" name="@area.Url"><a href="#">@area.Name</a></li>
+            }
+            i++;
+        }
+    </ul>
+  </li>
+</ul>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+<div class="container mainContent">
+      <div class="container-fluid">
+  <div class="row-fluid">
+  
+    <div id="restaurantsAndDishes" class="span8" >
+    </div>
+
+     <!--reklam content-->
+    <div class="span4 hidden-phone">
+    <blockquote id="adds"></blockquote>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p>
+       
+    <div class="ad">
+        <img src="../../gamlabildertest/mjolbycity_20111031.gif" />
+        <img src="../../gamlabildertest/honhan_20110401.gif" />
+    </div>   
+    <div class="ad">
+        <img src="../../gamlabildertest/mse_20091108.gif" />
+        <img src="../../gamlabildertest/elda_20120323.gif" />
+    </div>
+
+      <h1>HTML Ipsum Presents</h1>
+<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+<h2>Header Level 2</h2>
+<ol>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ol>
+
+<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+<h3>Header Level 3</h3>
+
+<ul>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ul>
+
+<pre><code>
+#header h1 a { 
+	display: block; 
+	width: 300px; 
+	height: 80px; 
+}
+</code></pre>
+
+    </div>
+  </div>
+
+</div>
+
+
+<div class="navbar navbar-fixed-bottom">
+  
+
+  <div class="navbar-inner footer">
+  <div class="container"> 
+
+    <ul class="nav">
+      <li><div class="fb-like" data-href="http://mjolbylunch.se/" data-send="false" data-width="450" data-show-faces="true"></div></li>
+    <li>
+    <address>
+        Kontakta oss: <a href="mailto:info@tobiz.se">mjolbylunch.se</a>.
+        Frågor och förslag om webbsidan: <a href="mailto:hazze@outlook.com">Webmaster</a>.<br> 
+  </address>
+    </li>
+    </ul>
+    
+    </div>
+  </div>
+</div>
+
+</div>
+

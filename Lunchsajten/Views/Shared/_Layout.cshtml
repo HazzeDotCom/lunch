@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @*<meta charset="utf-8" />*@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+    <meta name="description" content="@ViewBag.MetaDescription" />
+    <meta name="keywords" content="@ViewBag.MetaKeywords dagens, dagens lunch, mjölby, mjolbylunch, motalalunch.se, restauranger" />
+
+    <title>@ViewBag.Title</title>
+    <script src="@Url.Content("~/Scripts/modernizr-1.7.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet" type="text/css" />
+    @* egen cssfil här senare *@
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Calendar.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/js/jquery-1.8.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.form.js")" type="text/javascript"></script>
+
+     <script type="text/javascript">
+         $(document).ready(function () {
+             
+         });
+    </script>
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script type="text/javascript">    
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/sv_SE/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+    </script>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <script type="text/javascript" src="@Url.Content("~/js/bootstrap.min.js")"></script>
+</body>
+</html>

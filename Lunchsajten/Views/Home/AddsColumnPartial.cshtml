@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Models.AddsColumnRowModel>
+@{ var folder = "../../gamlabildertest/";}
+
+@foreach (var m in Model)
+{
+    <div class="ad">
+        <a href="@m.First.CompanyUrl" target="_blank">
+            <img alt="Reklambild för @m.First.CompanyName" src="@(folder + m.First.ImageUrl)"  rel="popover" data-content="@m.First.CompanyInfo"  data-original-title="@m.First.CompanyName" />
+        </a>
+        <a href="@m.Second.CompanyUrl" target="_blank">
+            <img alt="Reklambild för @m.Second.CompanyName" src="@(folder + m.Second.ImageUrl)" rel="popover" data-content="@m.Second.CompanyInfo" data-original-title="@m.Second.CompanyName" />
+        </a>
+    </div>   
+}

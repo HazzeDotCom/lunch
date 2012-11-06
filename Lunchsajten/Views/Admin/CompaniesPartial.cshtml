@@ -1,0 +1,345 @@
+﻿@model Models.AdminModel
+@{
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+   // ViewBag.Title = "Administration";
+}
+
+<div class="input-prepend">
+        <span class="add-on">Lunchområde</span>
+     @Html.DropDownList("lunchAreaId", Model.SelectlistItemsLunchAreas, "Alla...")
+     </div>
+
+
+<div id="companiesData"></div>
+@*
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#tab1" data-toggle="tab">Företag</a></li>
+  <li><a href="#tab2" data-toggle="tab">Lägg till företag</a></li>
+</ul>
+
+<div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+    <div class="tab-pane active" id="tab1">
+        Lista med alla företag (@Model.Companies.Count() st)
+        <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Id</th>  
+            <th>Organisationsnr</th>  
+            <th>Namn</th>  
+            <th>Epost</th>  
+            <th>Information</th>  
+            <th>Gata</th>  
+            <th>Postnr, stad</th>  
+            <th>Url</th>  
+            <th>Anteckningar</th>  
+            <th>Restauranger</th>  
+            <th>Reklam</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+        
+        @foreach (var c in Model.Companies)
+        { 
+            <tr>  
+            <td>@c.Id</td>  
+            <td>@c.Organisationnr</td>  
+            <td>@c.CompanyName</td>  
+            <td>@c.Email</td>  
+            <td>@c.Information</td>  
+            <td>@c.Street</td>  
+            <td></td>  
+            <td>@c.Url</td>  
+            <td>@c.Notes</td>  
+            <td>@c.RestuarantsCount st</td>  
+            <td>@c.AddsCount st</td>  
+          </tr>
+        }
+        </tbody>  
+      </table>
+    </div>
+    
+    <div class="tab-pane" id="tab2">
+      <div class="form-search">
+          <div class="input-append">
+            <input id="txtSearch" type="text" value="restaurang, lunch" class="span2 search-query" />
+            <button id="getEniroData" class="btn">Sök</button>
+          </div>
+     </div>
+        <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Företag <span id="totalHits"></span></th>  
+            <th>Organisationsnr</th>  
+            <th>Information</th>  
+            <th>Gata</th>
+            <th>Postnr</th>
+            <th>Postort</th>
+            <th>Box</th>
+            <th>Telefon</th>
+            <th>Position</th>  
+            <th></th>  
+          </tr>  
+        </thead>  
+        <tbody id="eniroData">  
+        </tbody>  
+      </table>
+      <div id="eniroDataOld"></div>
+    </div>
+  
+</div>
+*@
+
+    <div id="modalCreateCompany" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: hidden; ">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Företagsdetaljer ifrån eniro</h3>
+        </div>
+
+        <div class="form-horizontal" id="frmCreateCompany">
+                                                                                                                                                                                                                                                                                                    <div class="modal-body">
+        <p>Kontrollera informationen nedan, komplettera eller ändra om det behövs.</p>
+        <hr />
+
+      <div class="control-group">
+        <label class="control-label" for="Name">Restaurang</label>
+        <div class="controls">  
+          @Html.EditorFor(x => x.CompanyCreateModel.IsRestaurant)
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="Name">Namn</label>
+        <div class="controls">
+          @Html.EditorFor(x => x.CompanyCreateModel.CompanyName)
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Organisationsnr</label>
+        <div class="controls">
+          @Html.EditorFor(x => x.CompanyCreateModel.Organisationnr)
+        </div>
+      </div>
+    
+    <div class="control-group">
+        <label class="control-label">Information</label>
+        <div class="controls" title="Generell företagsinformation">
+            @Html.TextAreaFor(x => x.CompanyCreateModel.Information)
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label">E-post</label>
+        <div class="controls">
+            @Html.EditorFor(x => x.CompanyCreateModel.Email)
+        </div>
+    </div>
+        
+  <div class="control-group">
+    <label class="control-label">Gata</label>
+    <div class="controls">
+      @Html.EditorFor(x => x.CompanyCreateModel.Street)
+    </div>
+  </div>
+      
+  <div class="control-group">
+    <label class="control-label">Postnr</label>
+    <div class="controls">
+      @Html.EditorFor(x => x.CompanyCreateModel.PostCode)
+    </div>
+  </div>
+     
+  <div class="control-group">
+    <label class="control-label">Postort</label>
+    <div class="controls">
+      @Html.EditorFor(x => x.CompanyCreateModel.PostArea)
+    </div>
+  </div>
+      
+  <div class="control-group">
+    <label class="control-label">Box</label>
+    <div class="controls">
+      @Html.EditorFor(x => x.CompanyCreateModel.Box)
+    </div>
+  </div>
+  
+  <div id="phonenumersCtrls"></div>
+  
+      @Html.HiddenFor(x => x.CompanyCreateModel.Longitude)
+      @Html.HiddenFor(x => x.CompanyCreateModel.Latitude)
+
+  
+  <div class="control-group">
+    <label class="control-label">Eniroid</label>
+    <div class="controls">
+        @Html.HiddenFor(x => x.CompanyCreateModel.EniroId)
+        <span class="text-box single-line uneditable-input" id="CompanyCreateModel_EniroId2"></span>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Anteckningar</label>
+    <div class="controls" title="Privata anteckningar, kanske info ifrån möte etc...">
+      @Html.TextAreaFor(x => x.CompanyCreateModel.Notes)
+    </div>
+  </div>
+  
+    <hr />
+    </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Avbryt</button>
+            <button class="btn btn-primary" id="submitForm">Spara</button>
+        </div>
+    
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        LoadData();
+        $('#lunchAreaId').change(function (e) {
+            LoadData();
+        });
+
+        function LoadData() {
+            var model = { Tab: 'tblcompanies', LunchAreaId: $('#lunchAreaId :selected').val() };
+
+            //$('html, body').animate({ scrollTop: 0 }, 'slow');
+            $('#companiesData').html(loader);
+            var xhr = $.post('@Url.Action("GetData", "Admin")', model)
+                    .success(function (data) {
+                        $('#companiesData').html(data.Partial);
+                    })
+                    .error(function (data) {
+                        $('#companiesData').html(data.ErrorMsg);
+                    })
+                    .complete(function (data) {
+                        //$('#Dishes').append(data.SearchCount);
+                    });
+        }
+
+        $('#submitForm').click(function () {
+            var model = {
+                IsRestaurant: $('#CompanyCreateModel_IsRestaurant').is(':checked'),
+                LunchAreaId: $('#lunchAreaId :selected').val(),
+                CompanyName: $('#CompanyCreateModel_CompanyName').val(),
+                Organisationnr: $('#CompanyCreateModel_Organisationnr').val(),
+                Email: $('#CompanyCreateModel_Email').val(),
+                Information: $('#CompanyCreateModel_Information').val(),
+                City: $('#CompanyCreateModel_City').val(),
+                Street: $('#CompanyCreateModel_Street').val(),
+                PostCode: $('#CompanyCreateModel_PostCode').val(),
+                Box: $('#CompanyCreateModel_Box').val(),
+                Longitude: $('#CompanyCreateModel_Longitude').val(),
+                Latitude: $('#CompanyCreateModel_Latitude').val(),
+                EniroId: $('#CompanyCreateModel_EniroId').val(),
+                Notes: $('#CompanyCreateModel_Notes').val()
+            };
+
+            var xhr = $.post('@Url.Action("CreateCompany", "Admin")', model)
+                    .success(function (data) {
+                        if (data.Id > 0) {
+                            //alert(data.CreateMsg);
+                            window.location.reload(true);
+                        } else
+                            alert(data.CreateMsg);
+                    })
+                    .error(function (data) {
+                        alert('err'); //$('#restaurantsAndDishes').html(data.ErrorMsg);
+                    })
+                    .complete(function (data) {
+                        //$('#restaurantsAndDishes').append(data.SearchCount);
+                    });
+        });
+
+
+        $('.createCompany').live('click', function () {
+            $('#frmCreateCompany').clearForm();
+            $('#CompanyCreateModel_EniroId2').html('');
+            $('#modalCreateCompany').modal('show');
+            var eniroId = $(this).attr('eniroId');
+
+            var company = null;
+            for (i = 0; i < _eniroData.adverts.length; i++) {
+                if (_eniroData.adverts[i].eniroId == eniroId) {
+                    company = _eniroData.adverts[i];
+                    break;
+                }
+            }
+
+            $('#CompanyCreateModel_CompanyName').val(company.companyInfo.companyName);
+            $('#CompanyCreateModel_Organisationnr').val(company.companyInfo.orgNumber);
+            $('#CompanyCreateModel_Information').val(company.companyInfo.companyText);
+            $('#CompanyCreateModel_Street').val(company.address.streetName);
+            $('#CompanyCreateModel_PostCode').val(company.address.postCode);
+            $('#CompanyCreateModel_PostArea').val(company.address.postArea);
+            $('#CompanyCreateModel_Box').val(company.address.postBox);
+            $('#CompanyCreateModel_Longitude').val(company.location.coordinates[0].longitude);
+            $('#CompanyCreateModel_Latitude').val(company.location.coordinates[0].latitude);
+            $('#CompanyCreateModel_EniroId').val(company.eniroId);
+            $('#CompanyCreateModel_EniroId2').html(company.eniroId);
+            //  $('#phonenumersCtrls').html(CreatePhoneNumbersHtml(company.phoneNumbers));
+
+            /*
+            "phoneNumbers": [
+            {
+            "type": "std",
+            "phoneNumber": "0322 - 136 30",
+            "label": null
+            */
+        });
+
+        function CreatePhoneNumbersHtml(numbers) {
+            if (numbers == null) return "";
+
+            var html = '';
+            for (i = 0; i < numbers.length; i++) {
+                html += '<div class="control-group">';
+                html += '<label class="control-label">Telefon (' + numbers[i].type + ')</label>     <div class="controls">'
+                html += '<input id="CompanyCreateModel_PhoneNumbers_' + i + '__Type" name="CompanyCreateModel.PhoneNumbers[' + i + '].Type" type="hidden" value="' + numbers[i].type + '">';
+                html += '<input class="text-box single-line" id="CompanyCreateModel_PhoneNumbers_' + i + '__Number" name="CompanyCreateModel.PhoneNumbers[' + i + '].Number" type="text" value="' + numbers[i].phoneNumber + '">';
+                html += '</div></div>'
+            }
+            //html += '</div>';
+            return html;
+        }
+
+        var _eniroData;
+        $('#getEniroData').live('click', function () {
+            $("#eniroData").html('');
+            var city = $('#lunchAreaId :selected').text();
+            var lunchAreaId = $('#lunchAreaId :selected').val();
+            var search = $('#txtSearch').val();
+            $.ajax({
+                url: 'http://api.eniro.com/cs/search/basic?profile=HazzeDotCom&key=8021112249354795338&country=se&version=1.1.3&search_word=' + search + '&geo_area=' + city,
+                dataType: 'jsonp',
+                success: function (data) {
+                    _eniroData = data;
+
+                    $('#totalHits').html('(' + data.totalHits + ' st)');
+                    $.each(data.adverts, function () {
+                        var eniroId = this.eniroId;
+                        var row =
+                        '<tr><td>' + this.companyInfo.companyName + '</td><td>' +
+                        this.companyInfo.orgNumber + '</td><td>' +
+                        this.companyInfo.companyText + '</td><td>' +
+                         this.address.streetName + '</td><td>' +
+                         this.address.postCode + '</td><td>' +
+                         this.address.postArea + '</td><td>' +
+                         this.address.postBox + '</td><td>' +
+                         (this.phoneNumbers[0] != null ? this.phoneNumbers[0].phoneNumber : "") + '</td><td>' +
+                          this.location.coordinates[0].longitude + ', ' + this.location.coordinates[0].latitude
+                         + '</td><td><button eniroId="' + eniroId + '" type="button" class="btn-mini btn-success createCompany" data-loading-text="Loading...">Lägg till</button></td></tr>';
+
+                        $("#eniroData").append(row);
+                    });
+                }
+            });
+        });
+    });
+
+</script>
+

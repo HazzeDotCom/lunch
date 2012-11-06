@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Models.DishViewModel>
+
+Lista med alla rätter (@Model.Count() st)
+        <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Id</th>  
+            <th>Kortnamn</th>  
+            <th>Beskrivning</th>  
+            <th>Kökstyp</th>  
+            <th>Typ</th>  
+            <th>Restaurang</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+        @foreach (var c in Model)
+        { 
+          <tr dishid="@c.Id">  
+            <td>@c.Id</td>  
+            <td>@Html.DisplayFor(modelItem => item.ShortName)</td>  
+            <td>@c.Description</td>  
+            <td>@c.KitchenType</td>  
+            <td>@c.DishType</td>  
+            <td>@c.ResturantName</td>  
+          </tr>
+        }
+        </tbody>  
+      </table>

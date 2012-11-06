@@ -1,0 +1,58 @@
+﻿@model Models.RestaurantsViewModel
+@{
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    //ViewBag.Title = "Administration";
+}
+
+    @*<div class="form-search">
+      <div class="input-append">
+        <form action="@Url.Action("AddCity", "Admin")" method="post">
+            @Html.DropDownList("cityId", Model.SelectlistItemsCities)
+            @Html.Editor("url", new { @class = "span3 search-query", @value="http://www.lunch.se" })
+            <button id="btnAddCity" class="btn" type="submit">Lägg till vald stad</button>
+        </form>
+      </div>
+    </div>*@
+    <hr />
+        <h3>Lista med alla restauranger i lunchområde ???? (@Model.Restaurants.Count() st)</h3>
+        <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Id</th>  
+            <th>Namn</th>  
+            <th>Telefon</th>  
+            <th>Epost</th>  
+            <th>Url</th>  
+            <th>Information</th>  
+            <th>Antal rätter</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+        
+        @foreach (var c in Model.Restaurants)
+        { 
+            <tr id="@c.Id">  
+            <td>@c.Id</td>  
+            <td>@c.Name</td>  
+            <td>@c.Phone</td>  
+            <td>@c.Email</td>  
+            <td>@c.Url</td>  
+            <td>@c.Information</td>  
+            <td>@c.DishesCount</td>  
+          </tr>
+        }
+        </tbody>  
+      </table> 
+        
+        
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+    });
+
+</script>
+

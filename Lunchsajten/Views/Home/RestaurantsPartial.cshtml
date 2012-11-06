@@ -1,0 +1,33 @@
+﻿@model List<Models.RestaurantViewModel>
+
+<div class="alert alert-info">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Trevlig helg:</strong> Härliga fredag är här igen. Ha en trevlig helg nu alla lunchgäster!
+            </div>
+           
+@{ var i = 1; 
+   var last = 1; 
+}
+
+
+@foreach (var r in Model)
+{
+    if(i == 1 || (last + 3 == i)){
+        <div class="ad visible-phone" style="padding-bottom: 20px; text-align:center;">
+            <img src="../../gamlabildertest/mse_20091108.gif" />
+            <img src="../../gamlabildertest/elda_20120323.gif" />
+            <img src="../../gamlabildertest/bostadsbolaget_20110916.gif" />
+            <img src="../../gamlabildertest/blaklintsbuss_20120929.gif" />
+        </div>
+        last = i;
+    }
+    @Html.Partial("RestaurantPartial", r);
+    i++;
+}
+
+<div class="ad visible-phone" style="padding-bottom: 20px;">
+    <img src="../../gamlabildertest/mse_20091108.gif" />
+    <img src="../../gamlabildertest/elda_20120323.gif" />
+    <img src="../../gamlabildertest/bostadsbolaget_20110916.gif" />
+    <img src="../../gamlabildertest/blaklintsbuss_20120929.gif" />
+</div>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Models.LunchAreaViewModel>
+
+
+    <div class="form-search">
+    Nytt område:
+    <div class="input-prepend">
+        <span class="add-on">Namn/stad</span>
+     @Html.Editor("name", new { @class = "span2 search-query" })
+     </div>
+     
+     <div class="input-prepend">
+        <span class="add-on">Beskrivning</span>
+     @Html.Editor("description", new { @class = "span3 search-query" })
+     </div>
+
+    <div class="input-prepend">
+        <span class="add-on">Url</span>
+    @Html.Editor("url", new { @class = "span3 search-query" })
+          
+       </div>
+        <button class="btn" id="submitArea">Lägg till nytt lunchområde</button>
+    </div>
+
+    <hr />
+        <h3>Lista med alla lunchområden (@Model.Count() st)</h3>
+        <table class="table table-striped">  
+        <thead>  
+          <tr>  
+            <th>Id</th>
+            <th>Namn</th>
+            <th>Beskrivning</th>
+            <th>Url</th>  
+            <th>Status</th>  
+            <th>Antal restauranger</th>  
+            <th>Antal reklam</th>  
+          </tr>  
+        </thead>  
+        <tbody>  
+        
+        @foreach (var c in Model)
+        { 
+            <tr id="@c.Id">  
+            <td>@c.Id</td>
+            <td>@c.Name</td>
+            <td>@c.Description</td>
+            <td>@c.Url</td>  
+            <td>@c.Status</td>  
+            <td>@c.RestaurantsCount</td>  
+            <td>@c.AdvertisesCount</td>  
+          </tr>
+        }
+        </tbody>  
+      </table> 
+
+        
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#submitArea').click(function () {
+            var model = {
+                Name: $('#name').val(),
+                Description: $('#description').val(),
+                Url: $('#url').val()
+            };
+
+            var xhr = $.post('@Url.Action("CreateLunchArea", "Admin")', model)
+                    .success(function (data) {
+                        if (data.Id > 0) {
+                            $('#name').val('');
+                            $('#description').val('');
+                            $('#url').val('');
+                            $('#tabLunchAreas').click();
+                        } 
+                    })
+                    .error(function (data) {
+                        alert('err'); //$('#restaurantsAndDishes').html(data.ErrorMsg);
+                    })
+                    .complete(function (data) {
+                        //$('#restaurantsAndDishes').append(data.SearchCount);
+                    });
+        });
+    });
+
+</script>
+

@@ -1,0 +1,48 @@
+﻿@model Models.RestaurantViewModel
+
+<div class="restaurantName visible-phone">@Model.Name</div>
+  
+  <ul class="nav nav-tabs" >
+    <li class="restaurantName hidden-phone"><div style="width:360px;">@Model.Name</div></li>
+    <li class="active" style="margin-left: 60px;"><a href="#tab1@(Model.Id)" style="padding-bottom: 15px" data-toggle="tab">Dagens lunch</a></li>
+    <li><a href="#tab2@(Model.Id)" style="padding-bottom: 15px" data-toggle="tab">Information</a></li>
+    <li><a href="#tab3@(Model.Id)" style="padding-bottom: 15px"  data-toggle="tab">Kontakt</a></li>
+  </ul>
+
+  <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+    <div class="tab-pane active" id="tab1@(Model.Id)">
+        <dl class="dl-horizontal">
+            @foreach (var d in Model.Dishes)
+            { 
+                <dt>@d.ShortName</dt>
+                <dd>@d.Description</dd>
+            }
+        </dl>
+    </div>
+    <div class="tab-pane" id="tab2@(Model.Id)">
+        <dl class="dl-horizontal">
+            <dt>Information</dt>
+            <dd>@Model.Information</dd>
+            <dt>Länk</dt>
+            <dd><a href="@Model.Url" target="_blank">Länk</a></dd>
+            
+        </dl>
+    </div>
+    <div class="tab-pane" id="tab3@(Model.Id)">
+      <dl class="dl-horizontal">
+            <dt>Adress</dt>
+            <dd>@Model.Adress.Street</dd>
+            <dt>Telefon</dt>
+            <dd>@Model.Phone</dd>
+            <dt>Epost</dt>
+            <dd>@Model.Email</dd>
+        </dl>
+    </div>
+  </div>
+
+
+  <br />
+  <br />
+
+
+

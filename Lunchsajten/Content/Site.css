@@ -1,0 +1,111 @@
+﻿a {
+    color: #109910;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-top-color: #FDFAFA;
+    border-bottom-color: #FDFAFA;
+}
+
+.navbar .nav > li > a {
+    color: #FAF8F8;
+    text-shadow: 0 1px 0 #111010;
+}
+
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+    background-color: white;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+background-color: white;
+}
+
+.navbar-inner {
+    background: #a5f78c; /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIyJSIgc3RvcC1jb2xvcj0iI2E1Zjc4YyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEyJSIgc3RvcC1jb2xvcj0iIzgzYzc4MyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iIzUyYjE1MiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ1JSIgc3RvcC1jb2xvcj0iIzA3OGUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY3JSIgc3RvcC1jb2xvcj0iIzAwOGEwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgzJSIgc3RvcC1jb2xvcj0iIzA3OGUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNTc3MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top,  #a5f78c 2%, #83c783 12%, #52b152 30%, #078e00 45%, #008a00 67%, #078e00 83%, #057700 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,#a5f78c), color-stop(12%,#83c783), color-stop(30%,#52b152), color-stop(45%,#078e00), color-stop(67%,#008a00), color-stop(83%,#078e00), color-stop(100%,#057700)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #a5f78c 2%,#83c783 12%,#52b152 30%,#078e00 45%,#008a00 67%,#078e00 83%,#057700 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #a5f78c 2%,#83c783 12%,#52b152 30%,#078e00 45%,#008a00 67%,#078e00 83%,#057700 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #a5f78c 2%,#83c783 12%,#52b152 30%,#078e00 45%,#008a00 67%,#078e00 83%,#057700 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #a5f78c 2%,#83c783 12%,#52b152 30%,#078e00 45%,#008a00 67%,#078e00 83%,#057700 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a5f78c', endColorstr='#057700',GradientType=0 ); /* IE6-8 */
+}
+
+.ad img
+{
+    padding-bottom: 5px;    
+    -webkit-transition: margin 0.5s ease-out;
+    -moz-transition: margin 0.5s ease-out;
+    -o-transition: margin 0.5s ease-out;
+}
+
+.restaurantName {
+    font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
+    font-size: 30px;
+    color: #109910;
+    font-size: 25px;
+   /* text-shadow: 0 4px 3px rgba(0, 0, 0, 0.4), 0 8px 10px rgba(0, 0, 0, 0.1), 0 8px 9px rgba(0, 0, 0, 0.1); */
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:bold;
+}
+
+.cityName {
+    font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
+    font-size: 60px;
+    color: white;
+    font-size: 65px;
+    text-shadow: 0 4px 3px rgba(0, 0, 0, 0.4), 0 8px 10px rgba(0, 0, 0, 0.1), 0 8px 9px rgba(0, 0, 0, 0.1);
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    margin-top:40px;
+    margin-bottom:30px;
+}
+
+.mainContent {
+    margin-top:150px; 
+    margin-bottom: 50px;
+}
+ 
+ /* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px)  {
+    .mainContent {
+        margin-top:30px; 
+        margin-bottom: 0px;
+    }
+    
+    .cityName {
+        font-size: 50px;
+    }
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    .mainContent {
+        margin-top:30px; 
+        margin-bottom: 0px;
+    }
+    
+    .restaurantName 
+    {
+        padding-bottom: 15px; 
+        text-align:center;
+    }
+    
+    .cityName {
+        font-size: 40px;
+    }
+    
+    .ad img
+    {
+        
+    }
+    
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {  }
+
+
+
