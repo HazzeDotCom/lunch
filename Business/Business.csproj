@@ -51,7 +51,7 @@
     <Compile Include="LunchArea.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="DataContext.cs" />
-    <Compile Include="Day.cs" />
+    <Compile Include="MenuDay.cs" />
     <Compile Include="Dish.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="KitchenType.cs" />

@@ -9,7 +9,7 @@ namespace Business
     {
         public int Week { get; set; }
         public int Year { get; set; }
-        public ICollection<Day> Days { get; set; }
+        public virtual ICollection<MenuDay> Days { get; set; }
         public string Info { get; set; }
     }
 }

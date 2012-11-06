@@ -165,7 +165,8 @@ namespace Business
         public static IEnumerable<Dish> GetDishesByLunchAreaId(long id)
         {
             var db = new DataContext();
-            return db.Dishes.Where(d => d.Restaurant.Areas.Any(l => l.Id.Equals(id)));
+            return (IEnumerable<Dish>) db.Restaurants.Where(l => l.Areas.Any(a => a.Id == id)).Select(d => d.Dishes);
+            //return db.Dishes.Where(d => d.Restaurant.Areas.Any(l => l.Id.Equals(id)));
         }
 
         public static IEnumerable<Restaurant> GetRestaurantsByLunchAreaId(long id)

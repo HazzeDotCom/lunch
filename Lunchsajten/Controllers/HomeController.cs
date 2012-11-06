@@ -52,6 +52,11 @@ namespace Lunchsajten.Controllers
         [HttpPost]
         public JsonResult GetRestaurantsAndDishes(SearchModel model)
         {
+            //sätter denna här så länge
+            model.Week = CalendarManager.GetCurrentWeek();
+            model.Year = DateTime.Now.Year;
+            model.Day = (int)DateTime.Now.DayOfWeek;
+
             if (string.IsNullOrEmpty(model.SearchString)) model.SearchString = "";
             model = service.GetResturantsAndDishes(model);
             model.Partial = RenderPartialViewToString("RestaurantsPartial", model.Restaurants);

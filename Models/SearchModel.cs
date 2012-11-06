@@ -7,6 +7,8 @@ namespace Models
         public long AreaId { get; set; }
         public string AreaDescription { get; set; }
         public int Day { get; set; }
+        public int Week { get; set; }
+        public int Year { get; set; }
         public int SearchCount { get; set; }
         public string SearchString { get; set; }
         public List<RestaurantViewModel> Restaurants { get; set; }

@@ -14,7 +14,9 @@ namespace Lunchsajten.Service
         public SearchModel GetResturantsAndDishes(SearchModel model)
         {
             model.AreaDescription = GetLunchAreaById(model.AreaId).Description;
-            model.Restaurants = CreateRestaurantsViewModels(RestaurantManager.GetRestaurants(model)).ToList();
+            //model.Restaurants = CreateRestaurantsViewModels(RestaurantManager.GetRestaurants(model)).ToList();
+            //model.Restaurants = RestaurantManager.GetRestaurants(model).Select(r => CreateRestaurantMenusViewModel(r, model)).ToList();
+            model.Restaurants = RestaurantManager.GetRestaurantsWithMenus(model).Select(r => CreateRestaurantMenusViewModel(r, model)).ToList();
             model.SearchCount = model.Restaurants.Count;
             return model;
         }
@@ -53,10 +55,36 @@ namespace Lunchsajten.Service
         {
             return restaurants.Select(CreateRestaurantViewModel);
         }
-        
+
+        private static RestaurantViewModel CreateRestaurantMenusViewModel(Restaurant r, SearchModel model)
+        {
+            var rest = new RestaurantViewModel
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Information = r.Information,
+                Email = r.Email,
+                //LunchAreas = r
+                Adress =
+                    new AdressViewModel
+                    {
+                        PostArea = r.Adress.PostArea,
+                        Street = r.Adress.Street,
+                        PostCode = r.Adress.PostCode
+                    },
+                Url = r.Url,
+                Phone = r.PhoneNumbers.Any() ? r.PhoneNumbers.FirstOrDefault().Number : "", //   r.PhoneNumbers.FirstOrDefault().Number,
+                //  Contact = new UserViewModel(), // new UserViewModel { Email = r.Contacts.FirstOrDefault().Email, Id = r.Contacts.FirstOrDefault().Id, FirstName = r.Contacts.FirstOrDefault().FirstName, LastName = r.Contacts.FirstOrDefault().LastName, Phone = r.Contacts.FirstOrDefault().PhoneNumbers.FirstOrDefault().Number },
+                Dishes = r.Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
+                //Dishes = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days
+                //    .FirstOrDefault(x => (int)x.DayOfWeek == model.Day).Dishes.Select(d => new DishViewModel { Id = d.Id, ShortName = d.ShortName, Description = d.Description, DishType = d.DishType.ToString(), KitchenType = d.KitchenType.ToString() }).ToList()
+            };
+            return rest;
+        }
+
         private static RestaurantViewModel CreateRestaurantViewModel(Restaurant r)
         {
-
             var rest =  new RestaurantViewModel
                     {
                         Id = r.Id,
@@ -100,7 +128,9 @@ namespace Lunchsajten.Service
             return new DishViewModel
             {
                 Id = d.Id, ShortName = d.ShortName,
-                Description = d.Description, DishType = d.DishType.ToString(), ResturantName = d.Restaurant.Name, ResturantId = d.Restaurant.Id, KitchenType = d.KitchenType.ToString()
+                Description = d.Description, DishType = d.DishType.ToString(), 
+                ResturantName = d.Restaurant.Name, ResturantId = d.Restaurant.Id, 
+                KitchenType = d.KitchenType.ToString()
             };
         }
 

@@ -29,6 +29,23 @@ namespace Business
 
             return filteredList.Any() ? filteredList.ToList() : null;
         }
+
+        public static List<Restaurant> GetRestaurantsWithMenus(SearchModel model)
+        {
+            var result = GetRestaurants().Where(m => m.Menus.Any()).Where(l => l.Areas.Any(x => x.Id == model.AreaId)).ToList(); 
+            
+            if (string.IsNullOrEmpty(model.SearchString))
+                return result.ToList();
+
+            var str = model.SearchString.ToLower();
+            var filteredList = result.Where(r => 
+                r.Name.ToLower().Contains(str) || r.Information.ToLower().Contains(str) 
+                || (r.Dishes.Any(d => d.ShortName.ToLower().Contains(str)) ||
+                r.Dishes.Any(d => d.Description.ToLower().Contains(str))) 
+                );
+
+            return filteredList.Any() ? filteredList.ToList() : null;
+        }
         
         
         private static long CreateRestaurant(RestaurantEditModel model)

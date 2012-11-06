@@ -22,10 +22,26 @@ namespace Business
         public DbSet<Advertise> Advertises { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<Day> Days { get; set; }
+        public DbSet<MenuDay> MenuDays { get; set; }
         public DbSet<NameDay> NameDays { get; set; }
         public DbSet<Message> Messages { get; set; }
-        
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<MenuDay>()
+        //        .HasMany(n => n.Dishes)
+        //        .WithRequired()
+        //        .Map(conf => conf.MapKey("DishId"))
+        //        .WillCascadeOnDelete(false);
+
+        //    modelBuilder.Entity<Dish>()
+        //        .HasOptional(a => a.MenuDay)
+        //        //.HasRequired(a => a.toNation)
+        //        .WithMany()
+        //        .Map(conf => conf.MapKey("MenuDayId"))
+        //        .WillCascadeOnDelete(false);
+        //}
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
@@ -552,12 +568,41 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
             restaurants.First().Company = c;
             foreach (var restaurant in restaurants)
             {
-                var cmp = new Company() { Name = restaurant.Name };
+                var cmp = new Company { Name = restaurant.Name };
                 db.Companies.Add(cmp);
                 restaurant.Company = cmp;
                 db.Restaurants.Add(restaurant);
                 restaurant.Areas.Add(l1);
                 restaurant.Dishes = CreateDishes(restaurant);
+            }
+            db.SaveChanges();
+
+            foreach (var restaurant in restaurants)
+            {
+                var weeknr = CalendarManager.GetCurrentWeek();
+                var now = DateTime.Now.Year;
+                var dayOneDishes = restaurant.Dishes.Take(3).ToList();
+                var menu = new Menu
+                               {
+                                   Year = now,
+                                   Week = weeknr,
+                                   Info = string.Format("Information för menun som gäller för vecka {0} ", weeknr),
+                                   Days = new List<MenuDay>()
+                                              {
+                                                  new MenuDay() { DayOfWeek = DayOfWeek.Monday, Dishes = dayOneDishes },
+                                                  new MenuDay() { DayOfWeek = DayOfWeek.Tuesday, Dishes = dayOneDishes },
+                                                  new MenuDay() { DayOfWeek = DayOfWeek.Wednesday, Dishes = dayOneDishes },
+                                                  new MenuDay() { DayOfWeek = DayOfWeek.Thursday, Dishes = dayOneDishes, Message = "Ett erbjudande för idag!!"},
+                                                  new MenuDay() { DayOfWeek = DayOfWeek.Friday, Dishes = dayOneDishes }
+                                              }
+                               };
+
+                restaurant.Menus.Add(menu);
+                db.Menus.Add(menu);
+                foreach (var day in menu.Days)
+                {
+                    db.MenuDays.Add(day);
+                }
             }
             db.SaveChanges();
         }
@@ -572,6 +617,13 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
                 new Dish() {ShortName = "Pasta", Description = "Lasagne al forno med vitlöksbröd", Restaurant = r, DishType = DishType.Pasta, KitchenType=KitchenType.Italienskt},
                 new Dish() {ShortName = "Vegetarisk", Description = "Fylld gratinerad zucchini med grönsaksris och ört creme", Restaurant = r}, 
                 new Dish() {ShortName = "Sallad", Description = "Räksallad med kokt ägg, sparris och rhode island ", Restaurant = r},
+                
+                //new Dish() {ShortName = "Schnitzel", Description = "Ost & skinkfylld schnitzel med bearnaisesås, rödvinssås och klyftpotatis"},
+                //new Dish() {ShortName = "Lax", Description = "Kräftgratinerad laxfilé med vitvinsås och kokt potatis", DishType=DishType.Fisk },
+                //new Dish() {ShortName = "Kyckling", Description = "Flygande Jacob serveras med ris", KitchenType = KitchenType.SvensktOchNordiskt, DishType=DishType.Gryta},
+                //new Dish() {ShortName = "Pasta", Description = "Lasagne al forno med vitlöksbröd",  DishType = DishType.Pasta, KitchenType=KitchenType.Italienskt},
+                //new Dish() {ShortName = "Vegetarisk", Description = "Fylld gratinerad zucchini med grönsaksris och ört creme", }, 
+                //new Dish() {ShortName = "Sallad", Description = "Räksallad med kokt ägg, sparris och rhode island "},
             };
             return d;
         }

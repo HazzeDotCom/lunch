@@ -10,7 +10,7 @@ namespace Business
     {
         public Restaurant()
         {
-            Areas = new List<LunchArea>();
+         //   Areas = new List<LunchArea>();
         }
 
         public Restaurant(string name, string number, string info, string url)
@@ -26,6 +26,7 @@ namespace Business
             Dishes = new List<Dish>();
             Areas = new List<LunchArea>();
             Adress = new Adress();
+            Menus = new List<Menu>();
         }
 
         [Required]
