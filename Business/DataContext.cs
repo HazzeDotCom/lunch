@@ -579,7 +579,6 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
                 restaurant.Areas.Add(l1);
                 restaurant.Dishes = CreateDishes(restaurant);
 
-
                 var menu = new Menu
                 {
                     Year = now,
@@ -587,34 +586,52 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
                     Info = string.Format("Information för menun som gäller för vecka {0} ", weeknr),
                     Restaurant = restaurant
                 };
-
-                var dayOneDishes = restaurant.Dishes.Take(3).ToList();
-                var days = new List<MenuDay>()
-                                {
-                                    new MenuDay() {DayOfWeek = DayOfWeek.Monday, Dishes = dayOneDishes, Menu = menu },
-                                    new MenuDay() {DayOfWeek = DayOfWeek.Tuesday, Dishes = dayOneDishes, Menu = menu },
-                                    new MenuDay() {DayOfWeek = DayOfWeek.Wednesday, Dishes = dayOneDishes, Menu = menu  },
-                                    new MenuDay()
-                                        {
-                                            DayOfWeek = DayOfWeek.Thursday,
-                                            Dishes = dayOneDishes,
-                                            Message = "Ett erbjudande för idag!!", Menu = menu 
-                                        },
-                                    new MenuDay() {DayOfWeek = DayOfWeek.Friday, Dishes = dayOneDishes, Menu = menu }
-                                };
                 db.Menus.Add(menu);
-                menu.Days = days;
-            }
-            db.SaveChanges();
+                db.SaveChanges();
 
-            foreach (var restaurant in restaurants)
-            {
-
-                //foreach (var day in days)
-                //{
-                //    db.MenuDays.Add(day);
-                //}
-                //db.SaveChanges();
+                var menudays = new List<MenuDay>
+                                   {
+                                       new MenuDay
+                                           {
+                                               DayOfWeekId = (int)DayOfWeek.Monday,
+                                               Menu = menu,
+                                               Message = "",
+                                               Dishes = restaurant.Dishes.Take(3).Select(d => new MenuDish{Dish = d}).ToList()
+                                           },
+                                           new MenuDay
+                                           {
+                                               DayOfWeekId = (int)DayOfWeek.Tuesday,
+                                               Menu = menu,
+                                               Message = "",
+                                               Dishes = restaurant.Dishes.Take(3).Select(d => new MenuDish{Dish = d}).ToList()
+                                           },
+                                           new MenuDay
+                                           {
+                                               DayOfWeekId = (int)DayOfWeek.Wednesday,
+                                               Menu = menu,
+                                               Message = "",
+                                               Dishes = restaurant.Dishes.Take(3).Select(d => new MenuDish{Dish = d}).ToList()
+                                           },
+                                           new MenuDay
+                                           {
+                                               DayOfWeekId = (int)DayOfWeek.Thursday,
+                                               Menu = menu,
+                                               Message = "Idag är det torsdag.. gött",
+                                               Dishes = restaurant.Dishes.Take(3).Select(d => new MenuDish{Dish = d}).ToList()
+                                           },
+                                           new MenuDay
+                                           {
+                                               DayOfWeekId = (int)DayOfWeek.Friday, 
+                                               Menu = menu,
+                                               Message = "",
+                                               Dishes = restaurant.Dishes.Take(3).Select(d => new MenuDish{Dish = d}).ToList()
+                                           },
+                                   };
+                foreach (var md in menudays)
+                {
+                    db.MenuDays.Add(md);
+                }
+                db.SaveChanges();
             }
             db.SaveChanges();
         }

@@ -32,7 +32,8 @@ namespace Business
 
         public static List<Restaurant> GetRestaurantsWithMenus(SearchModel model)
         {
-            var result = GetRestaurants().Where(m => m.Menus.Any()).Where(l => l.Areas.Any(x => x.Id == model.AreaId)).ToList(); 
+            var result = GetRestaurants().Where(m => m.Menus.Any())
+                .Where(l => l.Areas.Any(x => x.Id == model.AreaId)).ToList(); 
             
             if (string.IsNullOrEmpty(model.SearchString))
                 return result.ToList();

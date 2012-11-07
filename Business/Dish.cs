@@ -9,6 +9,11 @@ namespace Business
         public virtual DishType DishType { get; set; }
         public virtual Restaurant Restaurant { get; set; }
         public KitchenType KitchenType { get; set; }
-        //public virtual MenuDay MenuDay { get; set; }
+    }
+
+    public class MenuDish : Entity
+    {
+        public virtual Dish Dish { get; set; }
+        public virtual MenuDay MenuDay { get; set; }
     }
 }
