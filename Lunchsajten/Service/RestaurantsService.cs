@@ -58,7 +58,7 @@ namespace Lunchsajten.Service
 
         private static RestaurantViewModel CreateRestaurantMenusViewModel(Restaurant r, SearchModel model)
         {
-            var days = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days; 
+            var days = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days;
             var day = days.FirstOrDefault(x => (int) x.DayOfWeek == model.Day);
             var dishes = day.Dishes.Select(d => new DishViewModel
                                         {
@@ -190,7 +190,7 @@ namespace Lunchsajten.Service
                 CompanyInfo = a.Company.Information,
                 CompanyName = a.Company.Name,
                 CompanyUrl = a.Company.Url,
-                ImageUrl = a.ImageUrl
+                ImageUrl = a.Image.ImageUrl
             };
         }
     }

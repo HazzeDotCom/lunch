@@ -57,6 +57,9 @@ namespace Lunchsajten.Controllers
             model.Year = DateTime.Now.Year;
             model.Day = (int)DateTime.Now.DayOfWeek;
 
+            // todo remove test
+            model.Day = 3;
+
             if (string.IsNullOrEmpty(model.SearchString)) model.SearchString = "";
             model = service.GetResturantsAndDishes(model);
             model.Partial = RenderPartialViewToString("RestaurantsPartial", model.Restaurants);

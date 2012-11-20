@@ -1,0 +1,75 @@
+﻿@model Business.Company
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Company</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Organisationnr</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Organisationnr)
+    </div>
+
+    <div class="display-label">EniroId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EniroId)
+    </div>
+
+    <div class="display-label">Information</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Information)
+    </div>
+
+    <div class="display-label">Notes</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">Url</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Url)
+    </div>
+
+    <div class="display-label">MapUrl</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MapUrl)
+    </div>
+
+    <div class="display-label">Latitude</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Latitude)
+    </div>
+
+    <div class="display-label">Longitude</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Longitude)
+    </div>
+
+    <div class="display-label">Created</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Created)
+    </div>
+
+    <div class="display-label">Edited</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Edited)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -24,7 +24,11 @@ namespace Business
         public virtual ICollection<Advertise> Advertises  { get; set; }
         public virtual ICollection<Restaurant> Restaurants { get; set; }
 
-        public Company(){}
+        public Company()
+        {
+            Advertises = new List<Advertise>();
+        }
+
         public Company(bool isRestaurant)
         {
             if(isRestaurant)

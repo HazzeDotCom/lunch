@@ -7,6 +7,11 @@ namespace Business
 {
     public class MenuDay : Entity
     {
+        public MenuDay()
+        {
+            Dishes = new List<MenuDish>();
+        }
+
         public virtual ICollection<MenuDish> Dishes { get; set; }
         public int DayOfWeekId { get; set; }
         public string Message { get; set; }

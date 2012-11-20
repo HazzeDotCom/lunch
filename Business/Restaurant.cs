@@ -10,7 +10,8 @@ namespace Business
     {
         public Restaurant()
         {
-         //   Areas = new List<LunchArea>();
+            Areas = new List<LunchArea>();
+            Menus = new List<Menu>();
         }
 
         public Restaurant(string name, string number, string info, string url)
@@ -53,6 +54,8 @@ namespace Business
             PhoneNumbers.Add(new PhoneNumber(){Number = number, Type = PhoneNumberType.Standard});
         }
 
+        
+
         public void SetDataFromCompany(Company c, LunchArea area)
         {
             this.Name = c.Name;
@@ -67,6 +70,18 @@ namespace Business
             }
         }
 
-        
+        public Menu GetCurrentWeeksMenu()
+        {
+            var week = CalendarManager.GetCurrentWeek();
+            return null;
+
+        }
+
+        public IEnumerable<MenuDay> GetDays(int week, int year)
+        {
+            var menu = Menus.First(m => m.Week == week && m.Year == year);
+            var days = menu.Days;
+            return days;
+        }
     }
 }

@@ -49,38 +49,44 @@ namespace Lunchsajten.Service
 
         public long CreateCompany(CompanyCreateModel createModel)
         {
-            return AdminManager.CreateCompany(createModel);
+            return CompanyManager.CreateCompany(createModel);
         }
 
         public IEnumerable<CompanyViewModel> GetCompanies()
         {
-            return AdminManager.Companies().Select(MapCompanyToViewModel);
+            return new CompanyService().GetCompaniesAll(); // CompanyManager.GetCompaniesAll(); //.Companies().Select(MapCompanyToViewModel);
         }
 
+        //public IEnumerable<CompanyViewModel> GetCompaniesByLunchArea(long id)
+        //{
+        //    var cs = new CompanyService();
+        //    return new CompanyService()..CompaniesByLunchArea(id).Select(MapCompanyToViewModel);
+        //}
+        
         public IEnumerable<CompanyViewModel> GetCompaniesByLunchArea(long id)
         {
-            return AdminManager.CompaniesByLunchArea(id).Select(MapCompanyToViewModel);
+            return new CompanyService().GetCompaniesByLunchArea(id); //.Select(MapCompanyToViewModel);
         }
 
-        private static CompanyViewModel MapCompanyToViewModel(Company c)
-        {
-            return new CompanyViewModel
-                        {
-                            CompanyName = c.Name,
-                            //Box = c.Adress.Box, 
-                            //LunchareaName = c.City.Name,
-                           // PostCode = c.Adress.PostCode, Email = c.Email, Url = c.Url,
-                            //Street = c.Adress.Street, EniroId = c.EniroId, 
-                            Id = c.Id, 
-                            Information = c.Information, 
-                            //Notes = c.Notes, 
-                            Organisationnr = c.Organisationnr, 
-                            Latitude = c.Latitude, 
-                            Longitude = c.Longitude, 
-                            AddsCount = c.Advertises.Count, 
-                            RestuarantsCount = c.Restaurants.Count
-                        };
-        }
+        //private static CompanyViewModel MapCompanyToViewModel(Company c)
+        //{
+        //    return new CompanyViewModel
+        //                {
+        //                    CompanyName = c.Name,
+        //                    //Box = c.Adress.Box, 
+        //                    //LunchareaName = c.City.Name,
+        //                   // PostCode = c.Adress.PostCode, Email = c.Email, Url = c.Url,
+        //                    //Street = c.Adress.Street, EniroId = c.EniroId, 
+        //                    Id = c.Id, 
+        //                    Information = c.Information, 
+        //                    //Notes = c.Notes, 
+        //                    Organisationnr = c.Organisationnr, 
+        //                    Latitude = c.Latitude, 
+        //                    Longitude = c.Longitude, 
+        //                    AddsCount = c.Advertises.Count, 
+        //                    RestuarantsCount = c.Restaurants.Count
+        //                };
+        //}
 
         public SelectList GetDishTypes(int selected)
         {
@@ -113,7 +119,7 @@ namespace Lunchsajten.Service
 
         public IEnumerable<RestaurantViewModel> GetRestaurantsByLunchAreaId(long id)
         {
-            return AdminManager.GetRestaurantsByLunchAreaId(id).Select(MapRestaurantToViewModel);
+            return RestaurantManager.GetRestaurantsByLunchAreaId(id).Select(MapRestaurantToViewModel);
         }
         
 
@@ -134,11 +140,9 @@ namespace Lunchsajten.Service
                        };
         }
 
-        
-
         public bool ExistsCompanyWithEniroId(int eniroId)
         {
-            return AdminManager.Companies().Any(c => c.EniroId == eniroId);
+            return CompanyManager.EniroIdExists(eniroId); 
         }
 
         public long CreateLunchArea(LunchAreaCreateModel model)

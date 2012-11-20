@@ -13,6 +13,22 @@ namespace Business
             return db.Restaurants;
         }
 
+        public static long CreateRestaurant(Restaurant r, List<long> areaIds)
+        {
+            using (var db = new DataContext())
+            {
+                r.Company = db.Companies.Find(r.Company.Id);
+               
+                db.Restaurants.Add(r);
+                foreach (var id in areaIds)
+                {
+                    r.Areas.Add(db.LunchAreas.Find(id));
+                }
+                db.SaveChanges();
+            }
+            return r.Id;
+        }
+
         public static List<Restaurant> GetRestaurants(SearchModel model)
         {
             var result = GetRestaurants().Where(l => l.Areas.Any(x => x.Id == model.AreaId)).ToList(); 
@@ -82,13 +98,6 @@ namespace Business
             return db.Restaurants.Find(id);
         }
 
-        //public static IEnumerable<Restaurant> GetRestaurantsByCity(long cityId)
-        //{
-        //    var db = new DataContext();
-        //    var name = db.LunchAreas.FirstOrDefault(c => c.Id == cityId).Name;
-        //    return db.Restaurants.Where(r => r.Area.Name == name);
-        //}
-
         public static IEnumerable<Dish> GetDishes()
         {
             var db = new DataContext();
@@ -97,7 +106,56 @@ namespace Business
 
         public static IEnumerable<Restaurant> GetRestaurantsByLunchArea(long lunchAreaId)
         {
-            throw new NotImplementedException();
+            var db = new DataContext();
+            var rests = db.Restaurants.Where(r => r.Areas.Any(l => l.Id == lunchAreaId));
+            return rests;
+        }
+
+        public static IEnumerable<Restaurant> GetRestaurantsByLunchAreaId(long id)
+        {
+            var db = new DataContext();
+            return db.Restaurants.Where(r => r.Areas.Any(a => a.Id == id));
+        }
+
+        public static Menu CreateMenu(Restaurant r, int week, int year, string info)
+        {
+            var m = new Menu() {Week = week, Year = year, Info = info};
+            using(var db = new DataContext())
+            {
+                m.Restaurant = db.Restaurants.Find(r.Id);
+                db.Menus.Add(m);
+                db.SaveChanges();
+            }
+            return m;
+        }
+
+        public static void CreateMenuDay(MenuDay md)
+        {
+            using(var db = new DataContext())
+            {
+                md.DayOfWeekId = (int) md.DayOfWeek;
+                md.Menu = db.Menus.Find(md.Menu.Id);
+
+                db.MenuDays.Add(md);
+              //  db.SaveChanges();
+
+                foreach (var menuDish in md.Dishes)
+                {
+                    menuDish.MenuDay = md;
+                    db.MenuDishes.Add(menuDish);
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public static void CreateDish(Dish dish)
+        {
+            using(var db = new DataContext())
+            {
+                dish.Restaurant = db.Restaurants.Find(dish.Restaurant.Id);
+                db.Dishes.Add(dish);
+                db.SaveChanges();
+            }
         }
     }
 }

@@ -46,8 +46,11 @@
     <Compile Include="AdminManager.cs" />
     <Compile Include="Adress.cs" />
     <Compile Include="Advertise.cs" />
+    <Compile Include="AdvertiseManager.cs" />
     <Compile Include="AdvertiseType.cs" />
     <Compile Include="CalendarManager.cs" />
+    <Compile Include="CompanyManager.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="LunchArea.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="DataContext.cs" />

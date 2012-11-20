@@ -9,110 +9,6 @@ namespace Business
 {
     public static class AdminManager
     {
-        //private static Lan GetLänById(long id)
-        //{
-        //    return Lan.FirstOrDefault(l => l.Id == id);
-        //}
-
-        //private static Landskap GetLandskapById(long id)
-        //{
-        //    return Landskap.FirstOrDefault(l => l.Id == id);
-        //}
-
-        //private static Landsdel GetLandsdelById(long id)
-        //{
-        //    return Landsdelar.FirstOrDefault(l => l.Id == id);
-        //}
-
-        //private static Lan GetLänByName(string str)
-        //{
-        //    str = str.Trim();
-        //    using (var db = new DataContext())
-        //    {
-        //        return db.Lan.FirstOrDefault(c => c.Name == str);
-        //    }
-        //}
-
-        //private static Landskap GetLandskapByName(string str)
-        //{
-        //    str = str.Trim();
-        //    using (var db = new DataContext())
-        //    {
-        //        return db.Landskap.FirstOrDefault(c => c.Name == str);
-        //    }
-        //}
-
-        //private static Landsdel GetLandsdelByName(string str)
-        //{
-        //    str = str.Trim();
-        //    using (var db = new DataContext())
-        //    {
-        //        return db.Landsdelar.FirstOrDefault(c => c.Name == str);
-        //    }
-        //}
-        
-        
-        private static long CreateRestaurant(RestaurantEditModel model)
-        {
-            //todo - lagra i databas
-            return 666;
-        }
-        
-        private static long SaveRestaurant(RestaurantEditModel model)
-        {
-            //todo - lagra i databas
-            return 666;
-        }
-        
-        private static RestaurantViewModel LoadRestaurant(long id)
-        {
-            //todo - 
-            return new RestaurantViewModel(){Id = 666};
-        }
-
-        public static long CreateCompany(CompanyCreateModel createModel)
-        {
-            var db = new DataContext();
-            var c = new Company(createModel.IsRestaurant)
-                        {
-                            Name = createModel.CompanyName,
-                            Organisationnr = createModel.Organisationnr, 
-                            Information = createModel.Information, Notes = createModel.Notes, 
-                            Latitude = createModel.Latitude, Longitude = createModel.Longitude, EniroId = createModel.EniroId,
-                            Email = createModel.Email, Url = createModel.Url, 
-                            //PhoneNumbers = model.PhoneNumbers.Select(p => new PhoneNumber {
-                            //    Number = p.Number,
-                               // Type = (PhoneNumberType) p.Type
-                           // }).ToList(),
-                            Adress = new Adress
-                                    {
-                                        PostCode = createModel.PostCode,
-                                        Street = createModel.Street,
-                                        PostArea = createModel.PostArea
-                                    }};
-            
-            try
-            {
-                db.Companies.Add(c);
-                //c.Adress.City = db.Cities.Find(c.Adress.City.Id);
-
-                if (createModel.IsRestaurant)
-                {
-                    var r = new Restaurant();
-                    var area = db.LunchAreas.Find(createModel.LunchAreaId);
-                    r.SetDataFromCompany(c, area);
-                    r.Areas.Add(area);
-                    db.Restaurants.Add(r);
-                }
-                db.SaveChanges();
-                return c.Id;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception();
-            }    
-        }
-
         
         public static IEnumerable<LunchArea> GetLunchAreas()
         {
@@ -124,12 +20,6 @@ namespace Business
         {
             var db = new DataContext();
             return db.LunchAreas.Find(id);
-        }
-
-        public static IEnumerable<Company> Companies()
-        {
-            var db = new DataContext();
-            return db.Companies.OrderBy(o => o.Name);
         }
 
         public static Dictionary<int, string> GetDishTypes()
@@ -159,7 +49,6 @@ namespace Business
         //    var db = new DataContext();
         //    return db.Dishes.Where(d => d.Restaurant.City.Id == id);
         //}
-
         
 
         public static IEnumerable<Dish> GetDishesByLunchAreaId(long id)
@@ -169,17 +58,7 @@ namespace Business
             //return db.Dishes.Where(d => d.Restaurant.Areas.Any(l => l.Id.Equals(id)));
         }
 
-        public static IEnumerable<Restaurant> GetRestaurantsByLunchAreaId(long id)
-        {
-            var db = new DataContext();
-            return db.Restaurants.Where(r => r.Areas.Any(a => a.Id == id));
-        }
-
-        public static IEnumerable<Company> CompaniesByLunchArea(long id)
-        {
-            var db = new DataContext();
-            return db.Companies.Where(c => c.Restaurants.Any(r => r.Areas.Any(a => a.Id == id)));
-        }
+        
 
         public static string GetTodaysNamesDay(string key)
         {
@@ -208,7 +87,21 @@ namespace Business
         public static IEnumerable<Advertise> GetAddsByLunchAreaId(long areaId)
         {
             var db = new DataContext();
-            return db.Advertises.Where(a => a.LunchArea.Id == areaId);
+            var areas = db.AdvertiseAreas.Where(x => x.LunchArea.Id == areaId).ToList(); 
+            return areas.Where(a => a.LunchArea.Id == areaId).Select(x => x.Advertise);
+        }
+
+        public static long CreateLunchArea(LunchArea l)
+        {
+            using (var db = new DataContext())
+            {
+                if(!db.LunchAreas.Any(la => la.Name.ToLower().Equals(l.Name.ToLower())))
+                {
+                    db.LunchAreas.Add(l);
+                    db.SaveChanges();    
+                }
+            }
+            return l.Id;
         }
     }
 }
