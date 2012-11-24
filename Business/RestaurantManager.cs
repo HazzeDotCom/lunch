@@ -133,17 +133,14 @@ namespace Business
         {
             using(var db = new DataContext())
             {
-                md.DayOfWeekId = (int) md.DayOfWeek;
-                md.Menu = db.Menus.Find(md.Menu.Id);
-
-                db.MenuDays.Add(md);
-              //  db.SaveChanges();
-
                 foreach (var menuDish in md.Dishes)
                 {
-                    menuDish.MenuDay = md;
-                    db.MenuDishes.Add(menuDish);
+                    menuDish.Dish.Restaurant = db.Restaurants.Find(menuDish.Dish.Restaurant.Id);
                 }
+
+                md.DayOfWeekId = (int) md.DayOfWeek;
+                md.Menu = db.Menus.Find(md.Menu.Id);
+                db.MenuDays.Add(md);
                 db.SaveChanges();
             }
         }
@@ -152,8 +149,9 @@ namespace Business
         {
             using(var db = new DataContext())
             {
-                dish.Restaurant = db.Restaurants.Find(dish.Restaurant.Id);
-                db.Dishes.Add(dish);
+                var rest = db.Restaurants.Find(dish.Restaurant.Id);
+                dish.Restaurant = rest;
+                rest.Dishes.Add(dish);
                 db.SaveChanges();
             }
         }

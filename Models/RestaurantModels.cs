@@ -42,6 +42,16 @@ namespace Models
         public IEnumerable<DishViewModel> Dishes { get; set; }
     }
 
+    public class RestaurantMenuViewModel : RestaurantModel
+    {
+        //public RestaurantViewModel()
+        //{
+        //    this.Dishes = new List<DishViewModel>();
+        //}
+        //  public List<LunchAreaViewModel> LunchAreas { get; set; }
+        public IEnumerable<MenuDishViewModel> Dishes { get; set; }
+    }
+
     public class RestaurantEditModel : RestaurantModel
     {
         

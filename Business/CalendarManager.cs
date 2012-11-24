@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Business
@@ -84,6 +85,19 @@ namespace Business
         {
             var now = DateTime.Now;
             return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
+
+        public static List<int> GetWeeks(int year)
+        {
+            var numberOdWeeks = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(new DateTime(year, 12, 31),
+                                                              CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+            var result = new List<int>();
+            for (int i = 0; i < numberOdWeeks; i++)
+            {
+                result.Add(i+1);
+            }
+            return result;
         }
     }
 }

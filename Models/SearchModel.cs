@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Models
 {
@@ -11,7 +12,7 @@ namespace Models
         public int Year { get; set; }
         public int SearchCount { get; set; }
         public string SearchString { get; set; }
-        public List<RestaurantViewModel> Restaurants { get; set; }
+        public List<RestaurantModel> Restaurants { get; set; }
         public string Partial { get; set; }
         public string ErrorMsg { get; set; }
 
@@ -40,6 +41,43 @@ namespace Models
         public long ResturantId { get; set; }
         public string ResturantName { get; set; }
     }
+
+
+    public class MenuDishViewModel
+    {
+        public int Day { get; set; }
+        public long MenuId { get; set; }
+        public int Week { get; set; }
+        public int Year { get; set; }
+        public IEnumerable<MenuDayViewModel> Days { get; set; }
+        public long RestaurantId { get; set; }
+        public string Info { get; set; }
+    }
+
+    public class MenuDayViewModel
+    {
+        
+    }
+
+
+    public class MenuMakerModel
+    {
+        public int Week { get; set; }
+        public string MenuInfo { get; set; }
+        public long RestuarantId { get; set; }
+        public string RestuarantName { get; set; }
+        public List<DishViewModel> Dishes { get; set; }
+        public List<MenuDishViewModel> MenuDishes { get; set; }
+        public long AreaId { get; set; }
+       // public SelectList Areas { get; set; }
+        public IEnumerable<SelectListItem> Areas { get; set; }
+        public IEnumerable<SelectListItem> Restaurants { get; set; }
+        public int Year { get; set; }
+        public IEnumerable<SelectListItem> Years { get; set; }
+        public IEnumerable<SelectListItem> Weeks { get; set; }
+
+    }
+
 
     public class AdressViewModel
     {

@@ -1,0 +1,58 @@
+﻿@model Models.MenuMakerModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.DropDownListFor(m => m.Year, Model.Years) 
+@Html.DropDownListFor(m => m.Week, Model.Weeks) 
+@Html.DropDownListFor(m => m.AreaId, Model.Areas) 
+@Html.DropDownListFor(m => m.RestuarantId, Model.Restaurants) 
+
+<div class="row">
+<!--
+    <div class="span4">
+      <p>Swap the order of your HTML&mdash;placing <code>.tabs</code> after <code>.tab-content</code>&mdash;for tabs on the bottom.</p>
+    </div>
+-->
+
+<div class="span6">
+      <h4>Tabs on the left</h4>
+      <p>Swap the class to put tabs on the left.</p>
+      <div class="tabbable tabs-left">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#moday" data-toggle="tab">Måndag</a></li>
+          <li><a href="#tuesday" data-toggle="tab">Tisdag</a></li>
+          <li><a href="#wednesday" data-toggle="tab">Onsdag</a></li>
+          <li><a href="#thursday" data-toggle="tab">Torsdag</a></li>
+          <li><a href="#friday" data-toggle="tab">Fredag</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="monday">
+            <p>I'm in Section A.</p>
+          </div>
+          <div class="tab-pane" id="tuesday">
+            <p>Howdy, I'm in Section B.</p>
+          </div>
+          <div class="tab-pane" id="wednesday">
+            <p>What up girl, this is Section C.</p>
+          </div>
+          <div class="tab-pane" id="thursday">
+            <p>What up girl, this is Section C.</p>
+          </div>
+          <div class="tab-pane" id="friday">
+            <p>What up girl, this is Section C.</p>
+          </div>
+        </div>
+      </div> <!-- /tabbable -->
+    </div>
+   
+    
+    <div class="span4">
+      <h4>Alla rätter</h4>
+      @foreach (var dish in Model.Dishes) { 
+      <p>@dish.Description</p>
+      }
+    </div>
+  </div>

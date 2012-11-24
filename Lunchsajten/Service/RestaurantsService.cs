@@ -56,20 +56,22 @@ namespace Lunchsajten.Service
             return restaurants.Select(CreateRestaurantViewModel);
         }
 
-        private static RestaurantViewModel CreateRestaurantMenusViewModel(Restaurant r, SearchModel model)
+        private static RestaurantModel CreateRestaurantMenusViewModel(Restaurant r, SearchModel model)
         {
             var days = r.Menus.FirstOrDefault(m => m.Week == model.Week && m.Year == model.Year).Days;
-            var day = days.FirstOrDefault(x => (int) x.DayOfWeek == model.Day);
-            var dishes = day.Dishes.Select(d => new DishViewModel
+            //var day = days.FirstOrDefault(x => (int) x.DayOfWeek == model.Day);
+            //var dddd = 
+            var dishes = days.SelectMany( x => x.Dishes.Select(d => new MenuDishViewModel
                                         {
+                                            Day = d.MenuDay.DayOfWeekId,
                                             Id = d.Dish.Id,
                                             ShortName = d.Dish.ShortName,
                                             Description = d.Dish.Description,
                                             DishType = d.Dish.DishType.ToString(),
                                             KitchenType = d.Dish.KitchenType.ToString()
-                                        }).ToList();
+                                        }));
 
-            var rest = new RestaurantViewModel
+            var rest = new RestaurantMenuViewModel
             {
                 Id = r.Id,
                 Name = r.Name,
@@ -151,7 +153,7 @@ namespace Lunchsajten.Service
         private static LunchAreaViewModel MapLunchAreaToModel(LunchArea l)
         {
             var model = new LunchAreaViewModel()
-                            {Id = l.Id, Name = l.Name, Status = l.LunchAreaStatus.ToString(), Url = l.Url, Description = l.Description };
+                            {Id = l.Id, Name = l.Name, Status = l.LunchAreaStatus.ToString(), Url = l.Url, Description = l.Description, RestaurantsCount = l.Restaurants.Count};
             return model;
         }
 
@@ -192,6 +194,49 @@ namespace Lunchsajten.Service
                 CompanyUrl = a.Company.Url,
                 ImageUrl = a.Image.ImageUrl
             };
+        }
+
+        public RestaurantModel GetRestaurantWithMenu(long restaurangId, SearchModel model)
+        {
+            var r = CreateRestaurantMenusViewModel(RestaurantManager.GetRestaurant(restaurangId), model);
+            return r;
+        }
+
+        public List<int> GetWeeks(int year)
+        {
+            return CalendarManager.GetWeeks(year);
+        }
+
+        public List<DishViewModel> GetRestaurantDishes(long restaurantId)
+        {
+            var r = RestaurantManager.GetRestaurant(restaurantId);
+            return r.Dishes.Select(CreateDishViewModel).ToList();
+        }
+        
+        public MenuDishViewModel GetRestaurantMenu(long restaurantId, int year, int week)
+        {
+            var menu = RestaurantManager.GetRestaurant(restaurantId).Menus.FirstOrDefault(m => m.Week == week && m.Year == year);
+            return CreateMenuViewModel(menu); 
+        }
+
+        private MenuDishViewModel CreateMenuViewModel(Menu menu)
+        {
+            var m = new MenuDishViewModel
+                        {
+                            Info = menu.Info,
+                            MenuId = menu.Id,
+                            RestaurantId = menu.Restaurant.Id,
+                            Week = menu.Week,
+                            Year = menu.Year,
+                            Days = CreateMenuDaysViewModel(menu.Days)
+                        };
+            return m;
+        }
+
+        private IEnumerable<MenuDayViewModel> CreateMenuDaysViewModel(ICollection<MenuDay> days)
+        {
+            return days.Select(d => new )
+            throw new NotImplementedException();
         }
     }
 }

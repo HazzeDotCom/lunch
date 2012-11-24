@@ -654,7 +654,16 @@ new Restaurant("	Mandarin	", "	0142-17700	", @"Lunch serveras mellan 11:00-15:00
             var now = DateTime.Now.Year;
             foreach (var restaurant in restaurants)
             {
-                var menu = RestaurantManager.CreateMenu(restaurant, weeknr, now, string.Format("Information för menun som gäller för vecka {0} ", weeknr));
+                var menu = RestaurantManager.CreateMenu(restaurant, weeknr, now,
+                                                        string.Format(
+                                                            "Information för menun som gäller för vecka {0} ", weeknr));
+                restaurant.Menus.Add(menu);
+            }
+
+            foreach (var restaurant in restaurants)
+            {
+                var menu = restaurant.Menus.First();
+              //  var menu = RestaurantManager.CreateMenu(restaurant, weeknr, now, string.Format("Information för menun som gäller för vecka {0} ", weeknr));
                 var menudays = new List<MenuDay>
                                    {
                                        new MenuDay
